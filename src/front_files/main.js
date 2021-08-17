@@ -81,19 +81,22 @@ export default class Home extends Component {
 
                 <Button variant="primary" onClick={this.fetchData}>Fetch Data</Button>{' '}
                 <div>
-                    <Col></Col>
-                    <Col>
-                        <Card
-                            bg="dark"
-                            text="white"
-                        >
-                            <Card.Title>Analysed Tweets</Card.Title>
-                            <Card.Text>
-                                <span id="tweets">{this.state.analysedData}</span>
-                            </Card.Text>
-                        </Card>
-                    </Col>
-                    <Col></Col>
+                    <Row>
+                        <Col></Col>
+                        <Col>
+                            <Card
+                                bg="dark"
+                                text="white"
+                            >
+                                <Card.Title>Analysed Tweets</Card.Title>
+                                <Card.Text>
+                                    <span id="tweets">{this.state.analysedData}</span>
+                                </Card.Text>
+                            </Card>
+                        </Col>
+                        <Col></Col>
+                    </Row>
+
                 </div>
             </Container>
         );
