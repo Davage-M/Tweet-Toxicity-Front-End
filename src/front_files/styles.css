@@ -1,0 +1,12 @@
+#tweets {
+    white-space: pre-line;
+}
+
+#twitterInput {
+    width: 50%
+}
+
+.formControl {
+    margin: 0 auto;
+    
+}
