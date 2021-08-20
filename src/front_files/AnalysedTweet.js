@@ -20,13 +20,13 @@ export default function AnalysedTweets(props) {
                         <Card.Title>
                             <span id="tweets">{props.text + '\n'}</span>
                         </Card.Title>
-                        <span id="tweets">Identity Attack: {props.label.identity_attack ? <ColoredIcon color="red" /> : '\n'}</span>
-                        <span id="tweets">Insult: {props.label.insult ? <ColoredIcon color="red" /> : '\n'}</span>
-                        <span id="tweets">Obscene: {props.label.obscene ? <ColoredIcon color="red" /> : '\n'}</span>
-                        <span id="tweets">Severe Toxicity: {props.label.severe_toxicity ? <ColoredIcon color="red" /> : '\n'}</span>
-                        <span id="tweets">Sexual Explicit: {props.label.sexual_explicit ? <ColoredIcon color="red" /> : '\n'}</span>
-                        <span id="tweets">Threat: {props.label.threat ? <ColoredIcon color="red" /> : '\n'}</span>
-                        <span id="tweets">Toxicity: {props.label.toxicity ? <ColoredIcon color="red" /> : ''}</span>
+                        <span id="tweets">Identity Attack: {props.label.identity_attack ? <ColoredIcon color="red" /> : null}{'\n'}</span>
+                        <span id="tweets">Insult: {props.label.insult ? <ColoredIcon color="red" /> : null}{'\n'}</span>
+                        <span id="tweets">Obscene: {props.label.obscene ? <ColoredIcon color="red" /> : null}{'\n'}</span>
+                        <span id="tweets">Severe Toxicity: {props.label.severe_toxicity ? <ColoredIcon color="red" /> : null}{'\n'}</span>
+                        <span id="tweets">Sexual Explicit: {props.label.sexual_explicit ? <ColoredIcon color="red" /> : null}{'\n'}</span>
+                        <span id="tweets">Threat: {props.label.threat ? <ColoredIcon color="red" /> : null}{'\n'}</span>
+                        <span id="tweets">Toxicity: {props.label.toxicity ? <ColoredIcon color="red" /> : null}{'\n'}</span>
                     </Card.Text>
                     <Button href={"https://twitter.com/draynilla/status/" + props.id}>Link</Button>
                 </Card.Body>
