@@ -5,6 +5,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
+import { BsFillExclamationTriangleFill } from "react-icons/bs";
 import Card from 'react-bootstrap/Card';
 import { getTweetData, parseAnalyzedData } from './utils.js';
 import AnalysedTweets from './AnalysedTweet';
@@ -72,6 +73,7 @@ export default class Home extends Component {
             <Container>
                 <Row>
                     <h1>Enter Twitter Handle</h1>
+                    <BsFillExclamationTriangleFill />
                 </Row>
 
                 <Row>

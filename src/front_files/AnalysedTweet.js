@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import ColoredIcon from './ColouredIcon.js';
 import './styles.css';
 
 export default function AnalysedTweets(props) {
@@ -19,13 +20,13 @@ export default function AnalysedTweets(props) {
                         <Card.Title>
                             <span id="tweets">{props.text + '\n'}</span>
                         </Card.Title>
-                        <span id="tweets">Identity Attack: {props.label.identity_attack + '\n'}</span>
-                        <span id="tweets">Insult: {props.label.insult + '\n'}</span>
-                        <span id="tweets">Obscene: {props.label.obscene + '\n'}</span>
-                        <span id="tweets">Severe Toxicity: {props.label.severe_toxicity + '\n'}</span>
-                        <span id="tweets">Sexual Explicit: {props.label.sexual_explicit + '\n'}</span>
-                        <span id="tweets">Threat: {props.label.threat + '\n'}</span>
-                        <span id="tweets">Toxicity: {props.label.toxicity + '\n'}</span>
+                        <span id="tweets">Identity Attack: {props.label.identity_attack ? <ColoredIcon color="red" /> : '\n'}</span>
+                        <span id="tweets">Insult: {props.label.insult ? <ColoredIcon color="red" /> : '\n'}</span>
+                        <span id="tweets">Obscene: {props.label.obscene ? <ColoredIcon color="red" /> : '\n'}</span>
+                        <span id="tweets">Severe Toxicity: {props.label.severe_toxicity ? <ColoredIcon color="red" /> : '\n'}</span>
+                        <span id="tweets">Sexual Explicit: {props.label.sexual_explicit ? <ColoredIcon color="red" /> : '\n'}</span>
+                        <span id="tweets">Threat: {props.label.threat ? <ColoredIcon color="red" /> : '\n'}</span>
+                        <span id="tweets">Toxicity: {props.label.toxicity ? <ColoredIcon color="red" /> : ''}</span>
                     </Card.Text>
                     <Button href={"https://twitter.com/draynilla/status/" + props.id}>Link</Button>
                 </Card.Body>
