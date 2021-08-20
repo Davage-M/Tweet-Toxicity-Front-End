@@ -7,7 +7,7 @@ export async function getTweetData() {
     try {
         setTimeout(() => controller.abort(), 20000);
         const response = await fetch(
-            `http://localhost:59001/?tHandle=${twitterHandle}`,
+            `http://localhost:59000/?tHandle=${twitterHandle}`,
             {
                 signal: controller.signal
             }

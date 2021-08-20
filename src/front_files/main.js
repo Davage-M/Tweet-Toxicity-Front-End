@@ -14,7 +14,7 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            analysedData: "",
+            analysedData: [],
             twitterHandleInput: "",
             isLoading: false
         };
@@ -23,7 +23,7 @@ export default class Home extends Component {
 
     async fetchData() {
         try {
-            console.log("Starting Fetch!!!!!");
+            //console.log("Starting Fetch!!!!!");
             //this.setState({ isLoading: true });
             //console.log(`Fetching Data for ${this.state.twitterHandleInput}.........`);
             let tweetData = await getTweetData();
@@ -31,7 +31,8 @@ export default class Home extends Component {
                 this.setState({ analysedData: "Uh oh something went wrong. The user you entered may not exist or their account may be private" });
                 throw "User not found";
             }
-            this.setState({ analysedData: parseAnalyzedData(tweetData) });
+            this.setState({ analysedData: tweetData });
+            //console.log(tweetData);
             //console.log(utils.parseAnalyzedData(tweetData));
             console.log("Data has been fetched");
         }
@@ -46,12 +47,25 @@ export default class Home extends Component {
     }
 
     render() {
-        let tweets;
-        if (this.state.analysedData) {
-            tweets = <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>
+        let tweets = [];
+        let stuff = [<AnalysedTweets text="{this.state.analysedData}"></AnalysedTweets>, <AnalysedTweets text="{this.state.analysedData}"></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>];
+        if (this.state.analysedData.length > 0) {
+            //let tweets = [];
+            ///tweets = <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>
+            //this.state.analysedData.map((variant, idx) => (
+            //    <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>
+            //));
+            //console.log("There is stuff");
+            for (const tweet of this.state.analysedData) {
+                let cardTweet = <AnalysedTweets text={tweet.text} label={tweet.label} id={tweet.id}></AnalysedTweets>
+                console.log(tweet.label.identity_attack);
+                tweets.push(cardTweet);
+            }
+            //console.log("Tweets: ");
+            //console.log(tweets);
         }
         else {
-            tweets = null;
+            tweets = [];
         }
 
         return (
@@ -78,21 +92,14 @@ export default class Home extends Component {
                     </Col>
                     <Col></Col>
                 </Row>
-
                 <Button variant="primary" onClick={this.fetchData}>Fetch Data</Button>{' '}
                 <div>
                     <Row>
                         <Col></Col>
                         <Col>
-                            <Card
-                                bg="dark"
-                                text="white"
-                            >
-                                <Card.Title>Analysed Tweets</Card.Title>
-                                <Card.Text>
-                                    <span id="tweets">{this.state.analysedData}</span>
-                                </Card.Text>
-                            </Card>
+                            {tweets.map((tweet, idx) => (
+                                <div key={idx}>{tweet}</div>
+                            ))}
                         </Col>
                         <Col></Col>
                     </Row>
@@ -102,3 +109,16 @@ export default class Home extends Component {
         );
     }
 }
+
+
+
+/*
+this.setState({
+  arrayvar: [...this.state.arrayvar, newelement]
+})
+
+this.setState(prevState => ({
+  arrayvar: [...prevState.arrayvar, newelement]
+}))
+
+*/
