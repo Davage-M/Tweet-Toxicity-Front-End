@@ -1,10 +1,23 @@
 
-export async function getTweetData() {
+export async function getTweetData(twitterHandle) {
+    const twitterUsernameRegex = /^[a-z0-9_]{4,15}$/i;
     let controller = new AbortController();
-    const twitterHandle = document.getElementById('twitterInput').value;
+    //const twitterHandle = document.getElementById('twitterInput').value;
+    /*
+    console.log(twitterHandle.match(twitterUsernameRegex));
+    if (!(twitterHandle.match(twitterUsernameRegex))) {
+        console.log("Invalid Username");
+        return;
+    }
+    */
     //console.log(`Twitter Handle = ${twitterHandle}`);
     console.log(`Fetching Data for ${twitterHandle}.........`);
     try {
+        if (!(twitterHandle.match(twitterUsernameRegex))) {
+            //console.log("Invlaid Username");
+            throw new Error("Invalid Username");
+
+        }
         setTimeout(() => controller.abort(), 20000);
         const response = await fetch(
             `http://localhost:59000/?tHandle=${twitterHandle}`,
@@ -15,10 +28,11 @@ export async function getTweetData() {
         console.log(response)
         if (!(response.ok)) {
             console.log("Response is not ok!");
-            throw "Response is not ok! User prob not found :(";
+            throw new Error("User may have not benn found or account may be private");
         }
+
         const json = await response.json();
-        console.log(json);
+        //console.log(json);
         return json;
     } catch (error) {
         console.error(error);
@@ -26,28 +40,27 @@ export async function getTweetData() {
     }
 }
 
+/*
+gets array of objects in the form of
+{
+    id:number
+    label:object with bools
+    text:string
+}
+*/
 export function parseAnalyzedData(analyzedData) {
-    let finalString = "";
+    let arrayWithTrue = [];
 
     for (const data of analyzedData) {
-        let tweet = data.text;
-        let id = data.id;
-        let isIdentityAttack = data.label.identity_attack;
-        let isInsult = data.label.insult;
-        let isObscene = data.label.obscene;
-        let isSevereToxicity = data.label.severe_toxicity;
-        let isSexualExplicit = data.label.sexual_explicit;
-        let isThreat = data.label.threat;
-        let isToxic = data.label.toxicity;
-        let tentativeString = `Analyzed Tweet: ${tweet}\n Id: ${id}\nIdentity Attack: ${isIdentityAttack}\nInsult: ${isInsult}\nObscene: ${isObscene}\nSevere Toxicity: ${isSevereToxicity}\nSexual Explicit: ${isSexualExplicit}\nThreat: ${isThreat}\nToxic: ${isToxic}\n\n------------\n\n`;
+        for (const l in data.label) {
+            //console.log(`${l}: ${data.label[l]}`);
 
-        if (isToxic) {
-            finalString += tentativeString;
+            if (data.label[l]) {
+                arrayWithTrue.push(data);
+                break;
+            }
         }
+    }
 
-    }
-    if (!(finalString)) {
-        return "Looks like this user has no toxic tweets";
-    }
-    return finalString;
+    return arrayWithTrue;
 }

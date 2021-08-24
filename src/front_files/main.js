@@ -10,6 +10,7 @@ import Card from 'react-bootstrap/Card';
 import { getTweetData, parseAnalyzedData } from './utils.js';
 import AnalysedTweets from './AnalysedTweet';
 import './styles.css';
+import ColoredIcon from './ColouredIcon.js';
 
 export default class Home extends Component {
     constructor(props) {
@@ -17,40 +18,68 @@ export default class Home extends Component {
         this.state = {
             analysedData: [],
             twitterHandleInput: "",
-            isLoading: false
+            isLoading: false,
+            showAllTweets: true
         };
         this.fetchData = this.fetchData.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onChangeValue = this.onChangeValue.bind(this);
+
     }
 
-    async fetchData() {
+    async fetchData(twitterHandle, showAllTweets) {
         try {
             //console.log("Starting Fetch!!!!!");
             //this.setState({ isLoading: true });
             //console.log(`Fetching Data for ${this.state.twitterHandleInput}.........`);
-            let tweetData = await getTweetData();
+            this.setState({ isLoading: true });
+            let tweetData = await getTweetData(twitterHandle);
             if (!(tweetData)) {
                 this.setState({ analysedData: "Uh oh something went wrong. The user you entered may not exist or their account may be private" });
-                throw "User not found";
+                throw new Error("User not found");
             }
+
+            if (!(showAllTweets)) {
+                tweetData = parseAnalyzedData(tweetData);
+            }
+
             this.setState({ analysedData: tweetData });
-            //console.log(tweetData);
-            //console.log(utils.parseAnalyzedData(tweetData));
             console.log("Data has been fetched");
         }
         catch (error) {
             //console.error(`Error: ${error}`);
             //console.error(error);
-            console.error(`Uh oh something went wrong\n`);
+            console.error(`Uh oh something went wrong The user you entered may not exist or their account may be private\n`);
         }
         //this.setState({ isLoading: false })
+        this.setState({ isLoading: false });
         console.log("Done fetching!");
         //<input id="twitterInput"></input>
     }
 
+    handleSubmit(e) {
+        this.setState({ twitterHandleInput: e.value });
+        console.log(this.state.twitterHandleInput);
+    }
+
+    onChangeValue(e) {
+
+        if (e.target.value === "flagged") {
+            this.setState({ showAllTweets: false });
+        }
+        else {
+            this.setState({ showAllTweets: true });
+        }
+
+        //console.log(this.state.showAllTweets)
+    }
+
+
+
     render() {
         let tweets = [];
-        let stuff = [<AnalysedTweets text="{this.state.analysedData}"></AnalysedTweets>, <AnalysedTweets text="{this.state.analysedData}"></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>];
-        if (this.state.analysedData.length > 0) {
+        //let stuff = [<AnalysedTweets text="{this.state.analysedData}"></AnalysedTweets>, <AnalysedTweets text="{this.state.analysedData}"></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>];
+        if (Array.isArray(this.state.analysedData) && this.state.analysedData.length > 0) {
             //let tweets = [];
             ///tweets = <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>
             //this.state.analysedData.map((variant, idx) => (
@@ -58,8 +87,9 @@ export default class Home extends Component {
             //));
             //console.log("There is stuff");
             for (const tweet of this.state.analysedData) {
-                let cardTweet = <AnalysedTweets text={tweet.text} label={tweet.label} id={tweet.id}></AnalysedTweets>
-                console.log(tweet.label.identity_attack);
+                console.log(tweet);
+                let cardTweet = <AnalysedTweets text={tweet.text} label={tweet.label} id={tweet.id} username={this.state.twitterHandleInput}></AnalysedTweets>
+                //console.log(tweet.label.identity_attack);
                 tweets.push(cardTweet);
             }
             //console.log("Tweets: ");
@@ -72,8 +102,24 @@ export default class Home extends Component {
         return (
             <Container>
                 <Row>
-                    <h1>Enter Twitter Handle</h1>
-                    <BsFillExclamationTriangleFill />
+                    <h1>Tweet Toxicity Analyzer</h1>
+                </Row>
+                <Row>
+                    <h4>Enter Twitter Handle</h4>
+                    <ColoredIcon color="red" />
+                </Row>
+
+                <Row>
+                    <div onChange={this.onChangeValue} className="containerDiv">
+                        <div className="childDiv">
+                            <div className="pull-left">
+                                <input type="radio" value="all" name="displayTweets" defaultChecked /> All Tweets
+                            </div>
+                            <div className="pull-left">
+                                <input type="radio" value="flagged" name="displayTweets" /> Only Flagged Tweets
+                            </div>
+                        </div>
+                    </div>
                 </Row>
 
                 <Row>
@@ -83,18 +129,19 @@ export default class Home extends Component {
                             <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
 
                             <FormControl
+                                type="text"
                                 placeholder="Username"
                                 aria-label="Username"
                                 aria-describedby="basic-addon1"
                                 size="lg"
                                 readOnly={false}
-                                id="twitterInput"
+                                onChange={(event) => { this.setState({ twitterHandleInput: event.target.value }); }}
                             />
                         </InputGroup>
                     </Col>
                     <Col></Col>
                 </Row>
-                <Button variant="primary" onClick={this.fetchData}>Fetch Data</Button>{' '}
+                <Button variant="primary" disabled={this.state.isLoading} value={this.state.twitterHandleInput} onClick={(e) => { this.fetchData(e.target.value, this.state.showAllTweets); console.log(this.state.twitterHandleInput); }}>{(this.state.isLoading) ? "Loading...." : "Fetch Data"}</Button>{' '}
                 <div>
                     <Row>
                         <Col></Col>
@@ -107,7 +154,7 @@ export default class Home extends Component {
                     </Row>
 
                 </div>
-            </Container>
+            </Container >
         );
     }
 }
@@ -122,5 +169,5 @@ this.setState({
 this.setState(prevState => ({
   arrayvar: [...prevState.arrayvar, newelement]
 }))
-
+<Button variant="primary" value={this.state.twitterHandleInput} onClick={(e) => { this.fetchData(e.target.value); console.log(this.state.twitterHandleInput); }}>Fetch Data</Button>{' '}
 */

@@ -10,3 +10,27 @@
     margin: 0 auto;
     
 }
+
+p > span {
+    
+}
+
+.recentactivitycontent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.recentactivitycontent .pull-left {
+    display: flex;
+    align-items: center;
+}
+
+.containerDiv {
+    text-align: center;
+}
+
+.childDiv {
+    display: inline-block;
+    text-align: left;
+}
