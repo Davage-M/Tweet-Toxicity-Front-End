@@ -5,12 +5,11 @@ import FormControl from 'react-bootstrap/FormControl';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
-import { BsFillExclamationTriangleFill } from "react-icons/bs";
-import Card from 'react-bootstrap/Card';
 import { getTweetData, parseAnalyzedData } from './utils.js';
-import AnalysedTweets from './AnalysedTweet';
+import AnalysedTweet from './AnalysedTweet.js';
 import './styles.css';
 import ColoredIcon from './ColouredIcon.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class Home extends Component {
     constructor(props) {
@@ -19,37 +18,45 @@ export default class Home extends Component {
             analysedData: [],
             twitterHandleInput: "",
             isLoading: false,
-            showAllTweets: true
+            showAllTweets: false,
+            pagination: 0
         };
         this.fetchData = this.fetchData.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.onChangeValue = this.onChangeValue.bind(this);
+        this.onChangeQueryValue = this.onChangeQueryValue.bind(this);
+        this.onChangePaginationValue = this.onChangePaginationValue.bind(this);
 
     }
 
-    async fetchData(twitterHandle, showAllTweets) {
+    async fetchData(twitterHandle, showAllTweets, pagination) {
         try {
-            //console.log("Starting Fetch!!!!!");
+
             //this.setState({ isLoading: true });
             //console.log(`Fetching Data for ${this.state.twitterHandleInput}.........`);
             this.setState({ isLoading: true });
-            let tweetData = await getTweetData(twitterHandle);
-            if (!(tweetData)) {
-                this.setState({ analysedData: "Uh oh something went wrong. The user you entered may not exist or their account may be private" });
-                throw new Error("User not found");
+            let tweetData = await getTweetData(twitterHandle, pagination);
+            if (typeof tweetData === "string") {
+                console.log(`tweetData: ${tweetData}`);
+                this.setState({ analysedData: tweetData });
+                throw new Error(tweetData);
             }
 
             if (!(showAllTweets)) {
                 tweetData = parseAnalyzedData(tweetData);
+                if (typeof tweetData === "string") {
+                    this.setState({ analysedData: tweetData });
+                    throw new Error(tweetData);
+                }
             }
-
+            //console.log(tweetData);
             this.setState({ analysedData: tweetData });
             console.log("Data has been fetched");
         }
         catch (error) {
             //console.error(`Error: ${error}`);
             //console.error(error);
-            console.error(`Uh oh something went wrong The user you entered may not exist or their account may be private\n`);
+            console.error(error);
+            //this.setState({ analysedData: error })
         }
         //this.setState({ isLoading: false })
         this.setState({ isLoading: false });
@@ -62,99 +69,143 @@ export default class Home extends Component {
         console.log(this.state.twitterHandleInput);
     }
 
-    onChangeValue(e) {
+    onChangeQueryValue(e) {
 
-        if (e.target.value === "flagged") {
-            this.setState({ showAllTweets: false });
+        if (e.target.value === "all") {
+            this.setState({ showAllTweets: true });
         }
         else {
-            this.setState({ showAllTweets: true });
+            this.setState({ showAllTweets: false });
         }
 
         //console.log(this.state.showAllTweets)
+    }
+
+    onChangePaginationValue(e) {
+
+        if (e.target.value === "yesPagination") {
+            this.setState({ pagination: 1 });
+        }
+        else {
+            this.setState({ pagination: 0 });
+        }
+    }
+
+    componentDidUpdate(e) {
+        //console.log(this.state.analysedData);
     }
 
 
 
     render() {
         let tweets = [];
-        //let stuff = [<AnalysedTweets text="{this.state.analysedData}"></AnalysedTweets>, <AnalysedTweets text="{this.state.analysedData}"></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>, <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>];
         if (Array.isArray(this.state.analysedData) && this.state.analysedData.length > 0) {
-            //let tweets = [];
+            tweets = [];
             ///tweets = <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>
             //this.state.analysedData.map((variant, idx) => (
             //    <AnalysedTweets text={this.state.analysedData}></AnalysedTweets>
             //));
             //console.log("There is stuff");
             for (const tweet of this.state.analysedData) {
-                console.log(tweet);
-                let cardTweet = <AnalysedTweets text={tweet.text} label={tweet.label} id={tweet.id} username={this.state.twitterHandleInput}></AnalysedTweets>
+                //console.log(tweet);
+                let cardTweet = <AnalysedTweet text={tweet.text} label={tweet.label} id={tweet.id} username={this.state.twitterHandleInput}></AnalysedTweet>
                 //console.log(tweet.label.identity_attack);
                 tweets.push(cardTweet);
             }
             //console.log("Tweets: ");
-            //console.log(tweets);
+            console.log(tweets);
         }
-        else {
+        else if (typeof this.state.analysedData === "string") {
             tweets = [];
+            let errorTweet = <AnalysedTweet error={true} errorMessage={this.state.analysedData}></AnalysedTweet>
+            tweets.push(errorTweet);
+            //console.log(tweets);
         }
 
         return (
-            <Container>
-                <Row>
-                    <h1>Tweet Toxicity Analyzer</h1>
-                </Row>
-                <Row>
-                    <h4>Enter Twitter Handle</h4>
-                    <ColoredIcon color="red" />
-                </Row>
+            <>
+                <Container>
+                    <Row>
+                        <h1>Tweet Toxicity Analyzer</h1>
+                    </Row>
+                    <Row>
+                        <h4>Enter Twitter Handle</h4>
+                        <ColoredIcon color="red" />
+                    </Row>
 
-                <Row>
-                    <div onChange={this.onChangeValue} className="containerDiv">
-                        <div className="childDiv">
-                            <div className="pull-left">
-                                <input type="radio" value="all" name="displayTweets" defaultChecked /> All Tweets
+                    <Row>
+                        <Col>
+                            <div onChange={this.onChangeQueryValue} className="containerDiv">
+                                <div className="childDiv">
+                                    <div className="pull-left">
+                                        <input type="radio" value="flagged" name="displayTweets" defaultChecked /> Only Flagged Tweets
+
+                                    </div>
+                                    <div className="pull-left">
+                                        <input type="radio" value="all" name="displayTweets" /> All Tweets
+                                    </div>
+                                </div>
                             </div>
-                            <div className="pull-left">
-                                <input type="radio" value="flagged" name="displayTweets" /> Only Flagged Tweets
-                            </div>
-                        </div>
-                    </div>
-                </Row>
-
-                <Row>
-                    <Col></Col>
-                    <Col>
-                        <InputGroup className="mb-3">
-                            <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-
-                            <FormControl
-                                type="text"
-                                placeholder="Username"
-                                aria-label="Username"
-                                aria-describedby="basic-addon1"
-                                size="lg"
-                                readOnly={false}
-                                onChange={(event) => { this.setState({ twitterHandleInput: event.target.value }); }}
-                            />
-                        </InputGroup>
-                    </Col>
-                    <Col></Col>
-                </Row>
-                <Button variant="primary" disabled={this.state.isLoading} value={this.state.twitterHandleInput} onClick={(e) => { this.fetchData(e.target.value, this.state.showAllTweets); console.log(this.state.twitterHandleInput); }}>{(this.state.isLoading) ? "Loading...." : "Fetch Data"}</Button>{' '}
-                <div>
+                        </Col>
+                    </Row>
                     <Row>
                         <Col></Col>
                         <Col>
-                            {tweets.map((tweet, idx) => (
-                                <div key={idx}>{tweet}</div>
-                            ))}
+                            <hr />
                         </Col>
                         <Col></Col>
                     </Row>
 
-                </div>
-            </Container >
+                    <Row>
+                        <Col>
+                            <div onChange={this.onChangePaginationValue} className="containerDiv">
+                                <div className="childDiv">
+                                    <div className="pull-left">
+                                        <input type="radio" value="noPagination" name="pagination" defaultChecked /> Most recent 100 tweets
+                                    </div>
+                                    <div className="pull-left">
+                                        <input type="radio" value="yesPagination" name="pagination" /> Most recent 3200 tweets (90+ seconds)
+                                    </div>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col></Col>
+                        <Col>
+                            <InputGroup className="mb-3">
+                                <InputGroup.Text>@</InputGroup.Text>
+
+                                <FormControl
+                                    type="text"
+                                    placeholder="Username"
+                                    aria-label="Username"
+                                    size="lg"
+                                    readOnly={false}
+                                    onChange={(event) => { this.setState({ twitterHandleInput: event.target.value }); }}
+                                />
+                            </InputGroup>
+                        </Col>
+                        <Col></Col>
+                    </Row>
+                    <Button variant="primary" disabled={this.state.isLoading} value={this.state.twitterHandleInput} onClick={(e) => { this.fetchData(e.target.value, this.state.showAllTweets, this.state.pagination); }}>{(this.state.isLoading) ? "Loading...." : "Fetch Data"}</Button>{' '}
+
+                    <Row>
+
+                        <Col xs={4}></Col>
+                        <Col xs={4}>
+                            {tweets.map((tweet, idx) => (
+                                <span key={idx}>{tweet}</span>
+                            ))}
+                        </Col>
+                        <Col xs={4}></Col>
+
+                    </Row>
+
+
+                </Container >
+            </>
         );
     }
 }

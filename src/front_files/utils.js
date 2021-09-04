@@ -1,5 +1,5 @@
 
-export async function getTweetData(twitterHandle) {
+export async function getTweetData(twitterHandle, pagination) {
     const twitterUsernameRegex = /^[a-z0-9_]{4,15}$/i;
     let controller = new AbortController();
     //const twitterHandle = document.getElementById('twitterInput').value;
@@ -11,32 +11,41 @@ export async function getTweetData(twitterHandle) {
     }
     */
     //console.log(`Twitter Handle = ${twitterHandle}`);
-    console.log(`Fetching Data for ${twitterHandle}.........`);
-    try {
-        if (!(twitterHandle.match(twitterUsernameRegex))) {
-            //console.log("Invlaid Username");
-            throw new Error("Invalid Username");
+    //console.log(`Fetching Data for ${twitterHandle}.........`);
 
-        }
-        setTimeout(() => controller.abort(), 20000);
+    try {
+        /*
+                if (!(twitterHandle.match(twitterUsernameRegex))) {
+                    //console.log("Invlaid Username");
+                    throw new Error("Invalid Username");
+        
+                }
+        */
+        //setTimeout(() => controller.abort(), 50000);
         const response = await fetch(
-            `http://localhost:59000/?tHandle=${twitterHandle}`,
+            //`http://localhost:59000/search_tweets?twitter_handle=${twitterHandle}&pagination=${pagination}`,
+            `https://tweet-toxicity-api.herokuapp.com/search_tweets?twitter_handle=${twitterHandle}&pagination=${pagination}`,
             {
                 signal: controller.signal
             }
         );
         console.log(response)
-        if (!(response.ok)) {
-            console.log("Response is not ok!");
-            throw new Error("User may have not benn found or account may be private");
-        }
 
         const json = await response.json();
+
+        if (!(response.ok)) {
+            //console.log("Response is not ok!");
+            //console.log(json.error);
+            throw new Error(json.error);
+        }
         //console.log(json);
+        //console.log(json.error)
         return json;
+
     } catch (error) {
-        console.error(error);
-        return;
+        //console.error(error);
+
+        return error.message;
     }
 }
 
@@ -62,5 +71,13 @@ export function parseAnalyzedData(analyzedData) {
         }
     }
 
-    return arrayWithTrue;
+    try {
+        if (!(arrayWithTrue.length > 0)) {
+            throw new Error("User has no flagged tweets");
+        }
+        return arrayWithTrue;
+    }
+    catch (e) {
+        return e.message;
+    }
 }
