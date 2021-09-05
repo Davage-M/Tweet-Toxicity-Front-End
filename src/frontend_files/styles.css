@@ -1,11 +1,3 @@
-.tweets {
-    
-}
-
-#twitterInput {
-    width: 50%
-}
-
 .containerDiv {
     text-align: center;
 }
@@ -15,3 +7,6 @@
     text-align: left;
 }
 
+p {
+    margin: 0;
+}

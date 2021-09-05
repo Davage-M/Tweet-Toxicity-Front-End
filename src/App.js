@@ -1,4 +1,4 @@
-import Home from './front_files/main.js';
+import Home from './frontend_files/main.js';
 import './App.css';
 
 function App() {

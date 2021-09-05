@@ -14,14 +14,12 @@ export async function getTweetData(twitterHandle, pagination) {
     //console.log(`Fetching Data for ${twitterHandle}.........`);
 
     try {
-        /*
-                if (!(twitterHandle.match(twitterUsernameRegex))) {
-                    //console.log("Invlaid Username");
-                    throw new Error("Invalid Username");
-        
-                }
-        */
-        //setTimeout(() => controller.abort(), 50000);
+
+        if (!(twitterHandle.match(twitterUsernameRegex))) {
+            throw new Error("Invalid Username");
+        }
+
+        //setTimeout(() => controller.abort(), 300000);
         const response = await fetch(
             //`http://localhost:59000/search_tweets?twitter_handle=${twitterHandle}&pagination=${pagination}`,
             `https://tweet-toxicity-api.herokuapp.com/search_tweets?twitter_handle=${twitterHandle}&pagination=${pagination}`,
@@ -29,28 +27,22 @@ export async function getTweetData(twitterHandle, pagination) {
                 signal: controller.signal
             }
         );
-        console.log(response)
+        //console.log(response)
 
         const json = await response.json();
 
         if (!(response.ok)) {
-            //console.log("Response is not ok!");
-            //console.log(json.error);
             throw new Error(json.error);
         }
-        //console.log(json);
-        //console.log(json.error)
         return json;
 
     } catch (error) {
         //console.error(error);
-
         return error.message;
     }
 }
 
 /*
-gets array of objects in the form of
 {
     id:number
     label:object with bools
