@@ -2,11 +2,8 @@
     text-align: center;
 }
 
-.childDiv {
+.leftAlign {
     display: inline-block;
     text-align: left;
 }
 
-p {
-    margin: 0;
-}

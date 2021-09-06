@@ -1,20 +1,8 @@
-
 export async function getTweetData(twitterHandle, pagination) {
     const twitterUsernameRegex = /^[a-z0-9_]{4,15}$/i;
     let controller = new AbortController();
-    //const twitterHandle = document.getElementById('twitterInput').value;
-    /*
-    console.log(twitterHandle.match(twitterUsernameRegex));
-    if (!(twitterHandle.match(twitterUsernameRegex))) {
-        console.log("Invalid Username");
-        return;
-    }
-    */
-    //console.log(`Twitter Handle = ${twitterHandle}`);
-    //console.log(`Fetching Data for ${twitterHandle}.........`);
 
     try {
-
         if (!(twitterHandle.match(twitterUsernameRegex))) {
             throw new Error("Invalid Username");
         }
@@ -27,7 +15,7 @@ export async function getTweetData(twitterHandle, pagination) {
                 signal: controller.signal
             }
         );
-        //console.log(response)
+
 
         const json = await response.json();
 
@@ -51,11 +39,9 @@ export async function getTweetData(twitterHandle, pagination) {
 */
 export function parseAnalyzedData(analyzedData) {
     let arrayWithTrue = [];
-
+    console.log(analyzedData);
     for (const data of analyzedData) {
         for (const l in data.label) {
-            //console.log(`${l}: ${data.label[l]}`);
-
             if (data.label[l]) {
                 arrayWithTrue.push(data);
                 break;
@@ -67,6 +53,7 @@ export function parseAnalyzedData(analyzedData) {
         if (!(arrayWithTrue.length > 0)) {
             throw new Error("User has no flagged tweets");
         }
+        console.log(arrayWithTrue)
         return arrayWithTrue;
     }
     catch (e) {
