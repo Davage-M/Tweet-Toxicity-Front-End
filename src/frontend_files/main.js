@@ -103,7 +103,7 @@ export default class Home extends Component {
                         <div className="containerDiv">
                             <div className="leftAlign">
                                 <div>
-                                    <span>Link to <a href="https://www.github.com/Davage-M/Tweet-Toxicity-API">API github repo</a></span>
+                                    <span>Link to <a href="https://www.github.com/Davage-M/Tweet-Toxicity-API">back end github repo</a></span>
                                 </div>
                                 <div>
                                     <span>Link to <a href="https://www.github.com/Davage-M/Tweet-Toxicity-Front-End">front end github repo</a></span>
