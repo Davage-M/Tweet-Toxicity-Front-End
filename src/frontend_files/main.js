@@ -150,7 +150,7 @@ export default class Home extends Component {
                                         <input type="radio" value="noPagination" name="pagination" defaultChecked /> Most recent 100 tweets
                                     </div>
                                     <div>
-                                        <input type="radio" value="yesPagination" name="pagination" /> Most recent 3200 tweets (long)
+                                        <input type="radio" value="yesPagination" name="pagination" /> Most recent 3200 tweets (Not yet implemented)
                                     </div>
                                 </div>
                             </div>
