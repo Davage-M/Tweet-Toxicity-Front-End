@@ -39,12 +39,13 @@ export async function getTweetData(twitterHandle, pagination) {
 */
 export function parseAnalyzedData(analyzedData) {
     let arrayWithTrue = [];
-    console.log(analyzedData);
+
+    OUTER_LOOP:
     for (const data of analyzedData) {
         for (const l in data.label) {
             if (data.label[l]) {
                 arrayWithTrue.push(data);
-                break;
+                continue OUTER_LOOP;
             }
         }
     }
@@ -53,7 +54,6 @@ export function parseAnalyzedData(analyzedData) {
         if (!(arrayWithTrue.length > 0)) {
             throw new Error("User has no flagged tweets");
         }
-        console.log(arrayWithTrue)
         return arrayWithTrue;
     }
     catch (e) {
