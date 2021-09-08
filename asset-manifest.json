@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Tweet-Toxicity-Front-End/static/css/main.38036c30.chunk.css",
-    "main.js": "/Tweet-Toxicity-Front-End/static/js/main.f90c0d0c.chunk.js",
-    "main.js.map": "/Tweet-Toxicity-Front-End/static/js/main.f90c0d0c.chunk.js.map",
+    "main.js": "/Tweet-Toxicity-Front-End/static/js/main.bd1a1ded.chunk.js",
+    "main.js.map": "/Tweet-Toxicity-Front-End/static/js/main.bd1a1ded.chunk.js.map",
     "runtime-main.js": "/Tweet-Toxicity-Front-End/static/js/runtime-main.d4a0e524.js",
     "runtime-main.js.map": "/Tweet-Toxicity-Front-End/static/js/runtime-main.d4a0e524.js.map",
     "static/css/2.818011ed.chunk.css": "/Tweet-Toxicity-Front-End/static/css/2.818011ed.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.818011ed.chunk.css",
     "static/js/2.86eb2d81.chunk.js",
     "static/css/main.38036c30.chunk.css",
-    "static/js/main.f90c0d0c.chunk.js"
+    "static/js/main.bd1a1ded.chunk.js"
   ]
 }
