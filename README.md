@@ -1,6 +1,11 @@
 Try it out here: https://davage-m.github.io/Tweet-Toxicity-Front-End
 
 Link to back end GitHub repo: https://github.com/Davage-M/Tweet-Toxicity-Back-End
+
+This project uses the [TensorFlow.js toxicity model](https://github.com/tensorflow/tfjs-models/tree/master/toxicity).
+
+This project uses the [Twitter API](https://developer.twitter.com/en/docs).
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
