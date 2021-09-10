@@ -6,6 +6,10 @@ This project uses the [TensorFlow.js toxicity model](https://github.com/tensorfl
 
 This project uses the [Twitter API](https://developer.twitter.com/en/docs).
 
+Example of an analyzed tweet:
+
+![Analyzed Tweet](pictures\analyzed_tweet_example.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
