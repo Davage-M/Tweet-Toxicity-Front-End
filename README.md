@@ -8,7 +8,7 @@ This project uses the [Twitter API](https://developer.twitter.com/en/docs).
 
 Example of an analyzed tweet:
 
-![Analyzed Tweet](pictures\analyzed_tweet_example.png)
+![Analyzed Tweet](pictures/analyzed_tweet_example.png)
 
 # Getting Started with Create React App
 
