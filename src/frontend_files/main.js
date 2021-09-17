@@ -125,10 +125,10 @@ export default class Home extends Component {
                             <div onChange={this.onChangeQueryValue} className="containerDiv">
                                 <div className="leftAlign">
                                     <div>
-                                        <input type="radio" value="flagged" name="displayTweets" defaultChecked /> Only Flagged Tweets
+                                        <input type="radio" value="flagged" name="displayTweets" defaultChecked /> <span>Only Flagged Tweets</span>
                                     </div>
                                     <div>
-                                        <input type="radio" value="all" name="displayTweets" /> All Tweets
+                                        <input type="radio" value="all" name="displayTweets" /> <span>All Tweets</span>
                                     </div>
                                 </div>
                             </div>
@@ -147,10 +147,10 @@ export default class Home extends Component {
                             <div onChange={this.onChangePaginationValue} className="containerDiv">
                                 <div className="leftAlign">
                                     <div>
-                                        <input type="radio" value="noPagination" name="pagination" defaultChecked /> Most recent 100 tweets
+                                        <input type="radio" value="noPagination" name="pagination" defaultChecked /> <span>Most recent 100 tweets</span>
                                     </div>
                                     <div>
-                                        <input type="radio" value="yesPagination" name="pagination" /> Most recent 3200 tweets (Not yet implemented)
+                                        <input type="radio" value="yesPagination" name="pagination" hidden /> <span hidden>Most recent 3200 tweets (Not yet implemented)</span>
                                     </div>
                                 </div>
                             </div>
