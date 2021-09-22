@@ -121,7 +121,9 @@ export default class Home extends Component {
                     </Row>
 
                     <Row>
-                        <Col>
+                        <Col
+                            className="d-flex justify-content-center"
+                        >
                             <div onChange={this.onChangeQueryValue} className="containerDiv">
                                 <div className="leftAlign">
                                     <div>
@@ -135,15 +137,19 @@ export default class Home extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col></Col>
-                        <Col>
-                            <hr />
+
+                        <Col
+                            className="d-flex justify-content-center"
+                        >
+                            <hr className="w-50" />
                         </Col>
-                        <Col></Col>
+
                     </Row>
 
                     <Row>
-                        <Col>
+                        <Col
+                            className="d-flex justify-content-center"
+                        >
                             <div onChange={this.onChangePaginationValue} className="containerDiv">
                                 <div className="leftAlign">
                                     <div>
@@ -158,9 +164,12 @@ export default class Home extends Component {
                     </Row>
 
                     <Row>
-                        <Col></Col>
-                        <Col>
-                            <InputGroup>
+                        <Col
+                            className="d-flex justify-content-center"
+                        >
+                            <InputGroup
+                                className="w-25"
+                            >
                                 <InputGroup.Text>@</InputGroup.Text>
                                 <FormControl
                                     type="text"
@@ -172,7 +181,6 @@ export default class Home extends Component {
                                 />
                             </InputGroup>
                         </Col>
-                        <Col></Col>
                     </Row>
 
                     <Button variant="primary" disabled={this.state.isLoading} value={this.state.twitterHandleInput} onClick={(e) => { this.fetchData(e.target.value, this.state.showAllTweets, this.state.pagination); }}>{(this.state.isLoading) ? `Searching ${this.state.twitterHandleInput}'s tweets.....` : "Search Tweets"}</Button>{' '}
